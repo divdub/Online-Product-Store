@@ -39,6 +39,9 @@ export const useProductStore = create((set) => ({
         return {success: true, message: data.message};
     },
     updateProduct: async (pid, updatedProduct) => {
+        try{
+
+        
         const res = await fetch(`/api/products/${pid}`, {
             method: "PUT",
             headers:{
@@ -46,12 +49,26 @@ export const useProductStore = create((set) => ({
             },
             body: JSON.stringify(updatedProduct),
         });
+
+
+       
+        if (!res.ok) {
+            const error = await res.json();
+            return { success: false, message: error.message || "Failed to update product" };
+        }
+
         const data = await res.json();
-        if(!data.success) return {success: false, message: data.message}
-        //update the product in the store
         set((state) => ({
-            products: state.products.map((product) => product._id === pid ? data.data : product),//here we use data.data because in controller we are sending data as data: updatedProduct
-        }))
+            products: state.products.map((product) =>
+                product._id === pid ? { ...product, ...updatedProduct } : product
+            ),
+        }));
+
+        return { success: true, message: "Product updated successfully" };
+    } catch (error) {
+        console.error("Error updating product:", error);
+        return { success: false, message: "Server error" };
+    }
     }
 
 }));

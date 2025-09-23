@@ -9,7 +9,13 @@
   "scripts": {
  
    
-  "dev": "nodemon backend/server.js"
+  "dev": "NODE_ENV=development nodemon backend/server.js",
+ 
+   
+  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
+ 
+   
+  "start": "cross-env NODE_ENV=production node backend/server.js"
  
   },
  
@@ -43,6 +49,9 @@
   },
  
   "devDependencies": {
+ 
+   
+  "cross-env": "^10.0.0",
  
    
   "nodemon": "^3.1.9"

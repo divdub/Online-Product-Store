@@ -72,10 +72,37 @@ const {
   };
 
   const handleUpdateProduct = async (pid, updatedProduct) => {
-         await updateProduct(pid, updatedProduct);
-          onClose();
-  }
-
+    try {
+      const { success, message } = await updateProduct(pid, updatedProduct); // Call the store function to update the product
+      if (success) {
+        toast({
+          title: "Success",
+          description: "Product updated successfully.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
+        onEditClose(); // Close the modal
+      } else {
+        toast({
+          title: "Error",
+          description: message || "Failed to update product.",
+          status: "error",
+          duration: 3000,
+          isClosable: true,
+        });
+      }
+    } catch (error) {
+      console.error("Error updating product:", error);
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
+  };
   return (
     <>
       <Box
@@ -162,7 +189,7 @@ const {
                 </VStack>
              </ModalBody>
              <ModalFooter>
-              <Button colorScheme="blue" mr={3} onClick={handleUpdateProduct(product._id, updatedProduct)}
+              <Button colorScheme="blue" mr={3} onClick={ () => handleUpdateProduct(product._id, updatedProduct)}
                >
                   Save
               </Button>
