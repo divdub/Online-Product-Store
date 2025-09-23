@@ -12,7 +12,7 @@
   "dev": "NODE_ENV=development nodemon backend/server.js",
  
    
-  "build": "npm ci && cd frontend && rm -rf node_modules package-lock.json && npm install --no-optional && npm rebuild && npm run build",
+  "build": "npm install && npm install --prefix frontend && npm run build --prefix frontend",
  
    
   "start": "cross-env NODE_ENV=production node backend/server.js"
