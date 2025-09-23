@@ -5,17 +5,14 @@
   "version": "1.0.0",
  
   "main": "index.js",
-   "engines": {
-    "node" : "18.x",
-    "npm" : "9.x"
-   },
+   
   "scripts": {
  
    
   "dev": "NODE_ENV=development nodemon backend/server.js",
  
    
-  "build": "npm ci && npm ci --prefix frontend && npm run build --prefix frontend",
+  "build": "npm ci && cd frontend && rm -rf node_modules package-lock.json && npm install --no-optional && npm rebuild && npm run build",
  
    
   "start": "cross-env NODE_ENV=production node backend/server.js"
